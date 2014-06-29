@@ -13,6 +13,31 @@
 			<textarea placeholder="Type your message here"></textarea>
 			<div class="chat-status">Status: <span>Idle</span></div>
 		</div>
+
 		<script src="http://127.0.0.1:8080/socket.io/socket.io.js"></script>
+
+		<script>
+			(function () {
+				var getNode = function(s) {
+					return document.querySelector(s);
+				},
+
+				// Retrieving nodes for elements to work with
+				textarea = getNode('.chat textarea'),
+				chatName = getNode('.chat-name');
+
+				// Connection to socket.io
+				try {
+					var socket = io.connect('http://127.0.0.1:8080');
+				} catch(e) {
+					console.log('Error when trying to connect to socket.io')
+				}
+
+				if (socket !== undefined) {
+					console.log('Connection OK!');
+				}
+
+			})();
+		</script>
 	</body>
 </html>
