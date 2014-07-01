@@ -23,8 +23,23 @@
 				},
 
 				// Retrieving nodes for elements to work with
+				status = getNode('.chat-status span'),
 				textarea = getNode('.chat textarea'),
-				chatName = getNode('.chat-name');
+				chatName = getNode('.chat-name'),
+
+				statusDefault = status.textContent,
+
+				setStatus = function(s) {
+					status.textContent = s;
+
+					// Returns status back to idle after 3 sec
+					if(s !== statusDefault) {
+						var delay = setTimeout(function () {
+							setStatus(statusDefault);
+							clearInterval(delay);
+						}, 3000);
+					}
+				};
 
 				// Connection to socket.io
 				try {
@@ -34,7 +49,14 @@
 				}
 
 				if (socket !== undefined) {
-					//console.log('Connection OK!');
+					// Listening for a status
+					socket.on('status', function(data) {
+						setStatus((typeof data === 'object') ? data.message : data);
+
+						if(data.clear === true) {
+							textarea.value = '';
+						}
+					});
 
 					// Listening for keydown
 					textarea.addEventListener('keydown', function(event) {
@@ -52,7 +74,6 @@
 						}
 					});
 				}
-
 			})();
 		</script>
 	</body>
