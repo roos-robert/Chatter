@@ -1,11 +1,13 @@
 var mongo = require('mongodb').MongoClient,
 	client = require('socket.io').listen(8080).sockets;
 
+// Connecting to mongoDB
 mongo.connect('mongodb://127.0.0.1/chat', function(err, db) {
 	if (err) throw err;
 
 	client.on('connection', function(socket) {
 
+		// Retrieving collection that will be used
 		var col = db.collection('messages'),
 			sendStatus = function (s) {
 				socket.emit('status', s);
