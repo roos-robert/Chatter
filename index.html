@@ -49,6 +49,11 @@
 				}
 
 				if (socket !== undefined) {
+					// LIstening for output
+					socket.on('output', function(data) {
+						console.log(data);
+					});
+
 					// Listening for a status
 					socket.on('status', function(data) {
 						setStatus((typeof data === 'object') ? data.message : data);

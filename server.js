@@ -11,6 +11,12 @@ mongo.connect('mongodb://127.0.0.1/chat', function(err, db) {
 				socket.emit('status', s);
 			};
 
+		// Emit all messages when a client connects
+		col.find().limit(100).sort({_id: 1}).toArray(function(err, res) {
+			if(err) throw err;
+			socket.emit('output', res);
+		});
+
 		// Waiting for input
 		socket.on('input', function(data) {
 			var name = data.name,
