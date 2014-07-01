@@ -28,6 +28,10 @@ mongo.connect('mongodb://127.0.0.1/chat', function(err, db) {
 			}
 			else {
 				col.insert({name: name, message: message}, function() {
+
+					// Emit latest messages to ALL clients
+					client.emit('output', [data]);
+
 					sendStatus({
 						message: "Message sent!",
 						clear: true

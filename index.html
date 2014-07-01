@@ -24,6 +24,7 @@
 
 				// Retrieving nodes for elements to work with
 				status = getNode('.chat-status span'),
+				messages = getNode('.chat-messages'),
 				textarea = getNode('.chat textarea'),
 				chatName = getNode('.chat-name'),
 
@@ -51,7 +52,17 @@
 				if (socket !== undefined) {
 					// LIstening for output
 					socket.on('output', function(data) {
-						console.log(data);
+						if(data.length) {
+							// Looping through messages
+							for(var x = 0; x < data.length; x++) {
+								var message = document.createElement('div');
+								message.setAttribute('class', 'chat-message');
+								message.textContent = data[x].name + ': ' + data[x].message;
+
+								messages.appendChild(message);
+								messages.insertBefore(message, messages.firstChild);
+							}
+						}
 					});
 
 					// Listening for a status
